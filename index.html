@@ -37,6 +37,7 @@
       place-items:center;
       padding: 26px 16px;
       position:relative;
+      z-index: 5;
     }
 
     .introBox{
@@ -47,7 +48,7 @@
     .introHint{
       margin-top: 14px;
       font-size: 15px;
-      opacity: .85;
+      opacity: .88;
       color:#4a1630;
     }
 
@@ -133,7 +134,6 @@
 
     /* =========================
        PARTÍCULAS (coroas/flores/brilhos)
-       (só ligamos depois do envelope)
     ========================= */
     #particles{
       position: fixed;
@@ -147,7 +147,6 @@
     .p{
       position:absolute;
       top:-12vh;
-      opacity:.18;
       animation: fall linear forwards;
       will-change: transform;
       filter: blur(.1px);
@@ -190,65 +189,48 @@
       padding: 34px 16px 70px;
     }
 
+    /* TOPO: trono preenchendo tudo */
     .hero{
-      background: var(--card);
+      position: relative;
       border-radius: 28px;
       box-shadow: var(--shadow);
       padding: 26px 18px 22px;
       text-align:center;
       border: 1px solid rgba(122,0,61,.12);
+
+      /* FUNDO TRONO FULL */
+      background-image: url("trono.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
     }
+
+    /* camada suave branca/rosa por cima do trono */
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(3px);
+      z-index: 0;
+    }
+
+    .hero > *{ position: relative; z-index: 1; }
 
     .hero h1{
       margin: 0 0 14px;
       color: var(--wine);
       font-size: 40px;
       letter-spacing: .4px;
+      text-shadow: 0 8px 28px rgba(0,0,0,.12);
     }
 
-    /* ===== fundo real atrás da Giovana + dourado (EXTRA) ===== */
     .throneArea{
-      position: relative;
       display:flex;
       justify-content:center;
       margin-top: 6px;
-      padding: 24px 0; /* dá espaço pro fundo aparecer */
-    }
-
-    .throneArea::before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform: translate(-50%, -50%);
-      width: min(760px, 96vw);
-      height: 360px;
-      background-image: url("trono.jpg");
-      background-size: cover;
-      background-position: center;
-      border-radius: 26px;
-      filter: blur(2px) saturate(1.15) contrast(1.05);
-      opacity: 0.55;
-      box-shadow: 0 30px 80px rgba(0,0,0,.25);
-      border: 2px solid rgba(255, 215, 120, .25);
-      z-index: 0;
-    }
-
-    /* brilho dourado por cima do trono */
-    .throneArea::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform: translate(-50%, -50%);
-      width: min(760px, 96vw);
-      height: 360px;
-      border-radius: 26px;
-      background: radial-gradient(circle at 50% 20%,
-        rgba(255,215,120,.22),
-        transparent 60%);
-      z-index: 1;
-      pointer-events:none;
+      position: relative;
     }
 
     .portrait{
@@ -259,8 +241,7 @@
       position:relative;
       background:#f6d1df;
       box-shadow: 0 18px 55px rgba(122,0,61,.22);
-      border: 6px solid rgba(255,95,162,.55);
-      z-index: 2; /* fica por cima do fundo */
+      border: 6px solid rgba(255,95,162,.65);
     }
     .portrait img{
       width:100%;
@@ -277,26 +258,26 @@
 
     .subtitle{
       margin: 14px 0 0;
-      opacity: .86;
+      opacity: .9;
       color:#4a1630;
     }
 
     /* segredo escondido */
     #secretSpot{
       margin: 10px auto 0;
-      width: 160px;
-      height: 28px;
+      width: 170px;
+      height: 30px;
       border-radius: 999px;
-      opacity: 0.04;
+      opacity: 0.05;
       background: rgba(255,95,162,.25);
       cursor: pointer;
       transition: opacity .2s ease, transform .2s ease;
     }
-    #secretSpot:hover{ opacity:.26; transform: translateY(-1px); }
+    #secretSpot:hover{ opacity:.30; transform: translateY(-1px); }
 
     .hint{
       font-size:12px;
-      opacity:.62;
+      opacity:.72;
       margin-top:8px;
     }
 
@@ -479,14 +460,6 @@
       .card{ min-height: unset; }
       .card img{ height: 210px; }
       .scene{ height: 250px; }
-
-      .throneArea{
-        padding: 18px 0;
-      }
-      .throneArea::before,
-      .throneArea::after{
-        height: 320px;
-      }
     }
   </style>
 </head>
@@ -555,13 +528,15 @@
             </div>
           </div>
 
-          <!-- GOSSIP GIRL -->
+          <!-- GOSSIP GIRL (opção 3 que você escolheu) -->
           <div class="card gg">
             <img src="gossipgirl.jpg" alt="Gossip Girl">
             <div class="text">
-              <em>Eu vi o seu brilho de longe.<br>E decidi que ele seria meu lugar.</em><br><br>
-              You know you love me…<br>
-              <span class="sign">xoxo, Caio</span>
+              <em>Algumas histórias viram fofoca.<br><br>
+              A nossa…<br>
+              vira destino.</em><br><br>
+              You know you love me.<br>
+              <span class="sign">xoxo, C</span>
             </div>
           </div>
 
@@ -655,13 +630,15 @@
       }
     }
 
+    // >>> MAIS COROAS e mais concentradas na foto <<<
     function rainCrowns(){
-      // concentrado na região central (onde fica a foto)
-      const baseLeft = 37 + Math.random()*26;
-      const size = 18 + Math.random()*18;
-      const dur = 10 + Math.random()*8;
-      const delay = Math.random()*2;
-      spawnParticle('👑', size, baseLeft, dur, delay, 0.18 + Math.random()*0.18);
+      // bem em cima da área central
+      const baseLeft = 42 + Math.random()*16;
+      const size = 20 + Math.random()*26;   // maiores
+      const dur  = 8 + Math.random()*7;     // mais rápido / dramático
+      const delay = Math.random()*0.6;
+      const op = 0.22 + Math.random()*0.22; // mais visível
+      spawnParticle('👑', size, baseLeft, dur, delay, op);
     }
 
     function rainFlowers(){
@@ -677,8 +654,13 @@
     function startParticles(){
       particles.style.display = 'block';
       if (!particles.querySelector('.glow')) makeGlows();
-      if (!crownsTimer) crownsTimer = setInterval(rainCrowns, 520);
-      if (!flowersTimer) flowersTimer = setInterval(rainFlowers, 900);
+
+      // MUITO mais coroas:
+      if (!crownsTimer) crownsTimer = setInterval(() => {
+        rainCrowns(); rainCrowns(); rainCrowns(); // 3 por batida
+      }, 220);
+
+      if (!flowersTimer) flowersTimer = setInterval(rainFlowers, 820);
     }
 
     // ===== Intro -> Sanctuary =====
@@ -690,7 +672,7 @@
     startBtn.addEventListener('click', () => {
       scene.classList.add('play');
 
-      // tenta tocar música (se existir vienna.mp3)
+      // tenta tocar música
       if (bgMusic) {
         bgMusic.volume = 0.35;
         bgMusic.play().catch(()=>{});

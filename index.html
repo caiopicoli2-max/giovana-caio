@@ -14,7 +14,7 @@
       --wine:#7a003d;
       --hot:#ff5fa2;
       --shadow: 0 20px 60px rgba(0,0,0,.22);
-      --shadow2: 0 10px 30px rgba(0,0,0,.18);
+      --shadow2: 0 12px 34px rgba(0,0,0,.18);
       --radius: 22px;
     }
 
@@ -28,13 +28,168 @@
       overflow-x:hidden;
     }
 
+    /* =========================
+       INTRO - ENVELOPE
+    ========================= */
+    #intro{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding: 26px 16px;
+      position:relative;
+    }
+
+    .introBox{
+      width: min(560px, 96vw);
+      text-align:center;
+    }
+
+    .introHint{
+      margin-top: 14px;
+      font-size: 15px;
+      opacity: .85;
+      color:#4a1630;
+    }
+
+    .introBtn{
+      margin-top: 16px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(255,255,255,.78);
+      box-shadow: 0 14px 28px rgba(0,0,0,.18);
+      cursor: pointer;
+      color: var(--wine);
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .scene{
+      position:relative;
+      width: 420px;
+      max-width: 92vw;
+      height: 270px;
+      margin: 0 auto;
+    }
+
+    .envelope{
+      position:absolute;
+      inset:0;
+      border-radius: 16px;
+      background: linear-gradient(180deg,#d7b08a,#b89067);
+      box-shadow: 0 30px 70px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+
+    .envShade{
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(135deg, rgba(0,0,0,.12) 0 45%, transparent 45% 100%),
+        linear-gradient(225deg, rgba(0,0,0,.12) 0 45%, transparent 45% 100%);
+      opacity:.55;
+      mix-blend-mode: multiply;
+      pointer-events:none;
+    }
+
+    .band{
+      position:absolute;
+      left:0; right:0;
+      top: 118px;
+      height: 44px;
+      background: rgba(255,255,255,.95);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 6px;
+      font-weight: 900;
+      color: #ff3b84;
+      letter-spacing: 3px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    }
+
+    .scissors{
+      position:absolute;
+      left: -90px;
+      top: 126px;
+      font-size: 34px;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.22));
+    }
+
+    .play .scissors{ animation: cut 6.6s ease forwards; }
+    @keyframes cut{ to{ left: 520px; } }
+
+    .play .band{ animation: bandOff 0.8s ease forwards; animation-delay: 4.3s; }
+    @keyframes bandOff{ to{ opacity:0; transform: scaleY(.05); } }
+
+    .stamp{
+      position:absolute;
+      right: 18px;
+      bottom: 18px;
+      font-size: 22px;
+      opacity:.9;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.18));
+    }
+
+    /* =========================
+       PARTÍCULAS (coroas/flores/brilhos)
+       (só ligamos depois do envelope)
+    ========================= */
+    #particles{
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      overflow:hidden;
+      display:none;
+    }
+
+    .p{
+      position:absolute;
+      top:-12vh;
+      opacity:.18;
+      animation: fall linear forwards;
+      will-change: transform;
+      filter: blur(.1px);
+    }
+
+    @keyframes fall{
+      from{ transform: translateY(-10vh) rotate(0deg); }
+      to{ transform: translateY(120vh) rotate(360deg); }
+    }
+
+    .glow{
+      position:absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.7);
+      box-shadow: 0 0 18px rgba(255,255,255,.6);
+      opacity:.14;
+      animation: twinkle 3.2s ease-in-out infinite;
+    }
+    @keyframes twinkle{
+      0%,100%{ transform: scale(.85); opacity:.10; }
+      50%{ transform: scale(1.18); opacity:.22; }
+    }
+
+    /* =========================
+       SANTUÁRIO
+    ========================= */
+    #sanctuary{
+      display:none;
+      position:relative;
+      z-index:2;
+    }
+
     .wrap{
+      position: relative;
+      z-index: 2;
       max-width: 1100px;
       margin: 0 auto;
       padding: 34px 16px 70px;
     }
 
-    /* ===== TOPO (TRONO + FOTO) ===== */
     .hero{
       background: var(--card);
       border-radius: 28px;
@@ -51,10 +206,49 @@
       letter-spacing: .4px;
     }
 
+    /* ===== fundo real atrás da Giovana + dourado (EXTRA) ===== */
     .throneArea{
+      position: relative;
       display:flex;
       justify-content:center;
       margin-top: 6px;
+      padding: 24px 0; /* dá espaço pro fundo aparecer */
+    }
+
+    .throneArea::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50%, -50%);
+      width: min(760px, 96vw);
+      height: 360px;
+      background-image: url("trono.jpg");
+      background-size: cover;
+      background-position: center;
+      border-radius: 26px;
+      filter: blur(2px) saturate(1.15) contrast(1.05);
+      opacity: 0.55;
+      box-shadow: 0 30px 80px rgba(0,0,0,.25);
+      border: 2px solid rgba(255, 215, 120, .25);
+      z-index: 0;
+    }
+
+    /* brilho dourado por cima do trono */
+    .throneArea::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50%, -50%);
+      width: min(760px, 96vw);
+      height: 360px;
+      border-radius: 26px;
+      background: radial-gradient(circle at 50% 20%,
+        rgba(255,215,120,.22),
+        transparent 60%);
+      z-index: 1;
+      pointer-events:none;
     }
 
     .portrait{
@@ -66,6 +260,7 @@
       background:#f6d1df;
       box-shadow: 0 18px 55px rgba(122,0,61,.22);
       border: 6px solid rgba(255,95,162,.55);
+      z-index: 2; /* fica por cima do fundo */
     }
     .portrait img{
       width:100%;
@@ -82,11 +277,29 @@
 
     .subtitle{
       margin: 14px 0 0;
-      opacity: .85;
+      opacity: .86;
       color:#4a1630;
     }
 
-    /* ===== MEIO (LAYOUT IGUAL AO PAINT) ===== */
+    /* segredo escondido */
+    #secretSpot{
+      margin: 10px auto 0;
+      width: 160px;
+      height: 28px;
+      border-radius: 999px;
+      opacity: 0.04;
+      background: rgba(255,95,162,.25);
+      cursor: pointer;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    #secretSpot:hover{ opacity:.26; transform: translateY(-1px); }
+
+    .hint{
+      font-size:12px;
+      opacity:.62;
+      margin-top:8px;
+    }
+
     .stage{
       margin-top: 22px;
       background: var(--card);
@@ -98,13 +311,12 @@
 
     .grid{
       display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: auto auto auto;
+      grid-template-columns: 1fr .85fr 1fr;
+      grid-template-rows: auto auto;
       gap: 18px;
       align-items: stretch;
     }
 
-    /* coloca cada bloco onde você desenhou */
     .pll{ grid-column:1; grid-row:1; }
     .gg { grid-column:3; grid-row:1; }
     .centerText{ grid-column:2; grid-row:1 / span 2; display:flex; align-items:center; justify-content:center; }
@@ -112,19 +324,19 @@
     .dr30{ grid-column:3; grid-row:2; }
 
     .card{
-      background: rgba(255,255,255,.7);
+      background: rgba(255,255,255,.72);
       border: 1px solid rgba(122,0,61,.12);
       border-radius: var(--radius);
       overflow:hidden;
       box-shadow: var(--shadow2);
       display:flex;
       flex-direction:column;
-      min-height: 260px;
+      min-height: 340px;
     }
 
     .card img{
       width:100%;
-      height: 160px;
+      height: 190px;
       object-fit:cover;
       display:block;
     }
@@ -138,24 +350,23 @@
 
     .card .text .sign{
       opacity:.85;
-      font-weight:700;
+      font-weight:800;
       color:#5a203b;
     }
 
+    .centerText{ min-height: 340px; }
     .centerText .big{
       text-align:center;
       font-weight: 900;
-      letter-spacing:.4px;
+      letter-spacing:.6px;
       color: #2a0b19;
-      font-size: 36px;
-      line-height: 1.15;
+      font-size: 46px;
+      line-height: 1.04;
       padding: 10px 6px;
+      text-transform: lowercase;
     }
-    .centerText .big span{
-      display:block;
-    }
+    .centerText .big span{ display:block; }
 
-    /* ===== CHURROS + CARTINHA ===== */
     .bottom{
       margin-top: 18px;
       display:flex;
@@ -163,14 +374,15 @@
     }
 
     .churros{
-      width: min(720px, 100%);
-      background: rgba(255,255,255,.7);
+      width: min(760px, 100%);
+      background: rgba(255,255,255,.74);
       border: 1px solid rgba(122,0,61,.12);
       border-radius: 26px;
       overflow:hidden;
       box-shadow: var(--shadow2);
       cursor:pointer;
-      transition: transform .15s ease, box-shadow .15s ease;
+      transition: transform .18s ease, box-shadow .18s ease;
+      position: relative;
     }
     .churros:hover{
       transform: translateY(-2px);
@@ -178,7 +390,7 @@
     }
     .churros img{
       width:100%;
-      height: 220px;
+      height: 230px;
       object-fit:cover;
       display:block;
     }
@@ -186,7 +398,7 @@
       padding: 14px 16px;
       text-align:center;
       color:#3d0f25;
-      font-weight:700;
+      font-weight:800;
     }
     .churros .cap small{
       display:block;
@@ -195,30 +407,40 @@
       margin-top:6px;
     }
 
-    /* ===== MODAL CARTA ===== */
+    .portalRing{
+      position:absolute;
+      inset:-20px;
+      border-radius: 30px;
+      border: 2px solid rgba(255,95,162,.22);
+      box-shadow: 0 0 0 10px rgba(255,95,162,.06), 0 0 40px rgba(255,95,162,.12);
+      opacity:0;
+      transform: scale(.98);
+      transition: opacity .18s ease, transform .18s ease;
+      pointer-events:none;
+    }
+    .churros:hover .portalRing{ opacity:1; transform: scale(1); }
+
+    /* modal carta */
     #overlay{
       display:none;
       position:fixed;
       inset:0;
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.58);
       z-index:9999;
       align-items:center;
       justify-content:center;
       padding: 18px;
     }
     .letter{
-      width: min(820px, 100%);
-      background: rgba(255,255,255,.94);
+      width: min(860px, 100%);
+      background: rgba(255,255,255,.95);
       border-radius: 26px;
       box-shadow: 0 30px 90px rgba(0,0,0,.45);
       padding: 26px 22px 22px;
       position:relative;
-      animation: fadeUp .25s ease;
       color: #2a0b19;
-    }
-    @keyframes fadeUp{
-      from{ opacity:0; transform: translateY(10px); }
-      to{ opacity:1; transform:none; }
+      transform: scale(.96);
+      opacity: 0;
     }
     .letter h2{
       margin: 0 0 10px;
@@ -227,7 +449,7 @@
     }
     .letter p{
       margin: 0;
-      line-height: 1.85;
+      line-height: 1.9;
       font-size: 16px;
       color:#2a0b19;
     }
@@ -244,7 +466,6 @@
       cursor:pointer;
     }
 
-    /* ===== RESPONSIVO ===== */
     @media (max-width: 900px){
       .grid{
         grid-template-columns: 1fr;
@@ -253,101 +474,136 @@
       .pll,.gg,.friends,.dr30,.centerText{
         grid-column:auto; grid-row:auto;
       }
-      .centerText .big{ font-size: 32px; }
+      .centerText{ min-height: unset; }
+      .centerText .big{ font-size: 36px; }
       .card{ min-height: unset; }
-      .card img{ height: 190px; }
+      .card img{ height: 210px; }
+      .scene{ height: 250px; }
+
+      .throneArea{
+        padding: 18px 0;
+      }
+      .throneArea::before,
+      .throneArea::after{
+        height: 320px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <!-- TOPO -->
-    <section class="hero">
-      <h1>Santuário para minha rainha</h1>
-      <div class="throneArea">
-        <div class="portrait">
-          <img src="giovana.jpg" alt="Giovana">
-          <div class="aura"></div>
+  <!-- Música (opcional): coloque vienna.mp3 no repo -->
+  <audio id="bgMusic" loop>
+    <source src="vienna.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Partículas (só ligamos depois do envelope abrir) -->
+  <div id="particles"></div>
+
+  <!-- INTRO -->
+  <section id="intro">
+    <div class="introBox">
+      <div class="scene" id="scene">
+        <div class="envelope">
+          <div class="envShade"></div>
+          <div class="band" id="band">❤ ❤ ❤ ❤ ❤ ❤ ❤</div>
+          <div class="stamp">🌻</div>
         </div>
-      </div>
-      <p class="subtitle">Aqui é o seu trono. Aqui é o seu lugar.</p>
-    </section>
-
-    <!-- MEIO (IGUAL AO PAINT) -->
-    <section class="stage">
-      <div class="grid">
-
-        <!-- PLL (ESQUERDA) -->
-        <div class="card pll">
-          <img src="pll.jpg" alt="Pretty Little Liars">
-          <div class="text">
-            <em>Alguns segredos são perigosos.<br>Outros… só querem te amar.</em><br><br>
-            Parece que você tem um admirador secreto.<br>
-            <span class="sign">— C</span>
-          </div>
-        </div>
-
-        <!-- CENTRO -->
-        <div class="centerText">
-          <div class="big">
-            <span>seu</span>
-            <span>mundo</span>
-            <span>para</span>
-            <span>provar</span>
-            <span>que te</span>
-            <span>amo</span>
-          </div>
-        </div>
-
-        <!-- GOSSIP GIRL (DIREITA) -->
-        <div class="card gg">
-          <img src="gossipgirl.jpg" alt="Gossip Girl">
-          <div class="text">
-            <em>Eu vi o seu brilho de longe.<br>E decidi que ele seria meu lugar.</em><br><br>
-            You know you love me…<br>
-            <span class="sign">xoxo, Caio</span>
-          </div>
-        </div>
-
-        <!-- FRIENDS (BAIXO-ESQ) -->
-        <div class="card friends">
-          <img src="friends.jpg" alt="Friends">
-          <div class="text">
-            <em>No meu mundo tem barulho.<br>Mas quando você chega… vira casa.</em><br><br>
-            Eu fico. Eu cuido. Eu escolho você.<br>
-            <span class="sign">— Caio</span>
-          </div>
-        </div>
-
-        <!-- DE REPENTE 30 (BAIXO-DIR) -->
-        <div class="card dr30">
-          <img src="dr30.jpg" alt="De Repente 30">
-          <div class="text">
-            <em>Se eu pudesse pular no tempo,<br>eu ainda escolheria você em todas as idades.</em><br><br>
-            Porque meu “felizes pra sempre” tem seu nome.<br>
-            <span class="sign">— C</span>
-          </div>
-        </div>
-
+        <div class="scissors">✂️</div>
       </div>
 
-      <!-- CHURROS (ABAIXO, CLICA E ABRE CARTA) -->
-      <div class="bottom">
-        <div class="churros" id="openLetter" title="Clique…">
-          <img src="churros.jpg" alt="Churros de frango">
-          <div class="cap">
-            foto churros de frango
-            <small>clica e abre uma cartinha</small>
+      <div class="introHint">Rasgue o papel, caso me ame.</div>
+      <button class="introBtn" id="startBtn">Rasgar</button>
+    </div>
+  </section>
+
+  <!-- SANTUÁRIO -->
+  <section id="sanctuary">
+    <div class="wrap">
+      <section class="hero">
+        <h1>Santuário para minha rainha</h1>
+
+        <div class="throneArea">
+          <div class="portrait">
+            <img src="giovana.jpg" alt="Giovana">
+            <div class="aura"></div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
+
+        <p class="subtitle">Aqui é o seu trono. Aqui é o seu lugar.</p>
+
+        <div id="secretSpot" title="segredo"></div>
+        <div class="hint">(tem um segredo aqui…)</div>
+      </section>
+
+      <section class="stage">
+        <div class="grid">
+          <!-- PLL -->
+          <div class="card pll">
+            <img src="pll.jpg" alt="Pretty Little Liars">
+            <div class="text">
+              <em>Alguns segredos são perigosos.<br>Outros… só querem te amar.</em><br><br>
+              Parece que você tem um admirador secreto.<br>
+              <span class="sign">— C</span>
+            </div>
+          </div>
+
+          <!-- CENTRO -->
+          <div class="centerText">
+            <div class="big">
+              <span>seu</span><span>mundo</span><span>para</span><span>provar</span><span>que te</span><span>amo</span>
+            </div>
+          </div>
+
+          <!-- GOSSIP GIRL -->
+          <div class="card gg">
+            <img src="gossipgirl.jpg" alt="Gossip Girl">
+            <div class="text">
+              <em>Eu vi o seu brilho de longe.<br>E decidi que ele seria meu lugar.</em><br><br>
+              You know you love me…<br>
+              <span class="sign">xoxo, Caio</span>
+            </div>
+          </div>
+
+          <!-- FRIENDS -->
+          <div class="card friends">
+            <img src="friends.jpg" alt="Friends">
+            <div class="text">
+              <em>No meu mundo tem barulho.<br>Mas quando você chega… vira casa.</em><br><br>
+              Eu fico. Eu cuido. Eu escolho você.<br>
+              <span class="sign">— Caio</span>
+            </div>
+          </div>
+
+          <!-- DE REPENTE 30 -->
+          <div class="card dr30">
+            <img src="dr30.jpg" alt="De Repente 30">
+            <div class="text">
+              <em>Se eu pudesse pular no tempo,<br>eu ainda escolheria você em todas as idades.</em><br><br>
+              Porque meu “felizes pra sempre” tem seu nome.<br>
+              <span class="sign">— C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHURROS portal -->
+        <div class="bottom">
+          <div class="churros" id="openLetter" title="Clique…">
+            <div class="portalRing"></div>
+            <img src="churros.jpg" alt="Churros de frango">
+            <div class="cap">
+              foto churros de frango
+              <small>clica e abre uma cartinha</small>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
 
   <!-- MODAL CARTA -->
   <div id="overlay">
-    <div class="letter">
+    <div class="letter" id="letterBox">
       <button class="closeBtn" id="closeLetter">✕</button>
       <h2>Giovana,</h2>
       <p>
@@ -367,21 +623,112 @@
   </div>
 
   <script>
+    // ===== Música (toca no clique do Rasgar) =====
+    const bgMusic = document.getElementById('bgMusic');
+
+    // ===== Partículas =====
+    const particles = document.getElementById('particles');
+    let crownsTimer = null;
+    let flowersTimer = null;
+
+    function spawnParticle(char, size, left, dur, delay, opacity){
+      const el = document.createElement('div');
+      el.className = 'p';
+      el.textContent = char;
+      el.style.left = left + 'vw';
+      el.style.fontSize = size + 'px';
+      el.style.animationDuration = dur + 's';
+      el.style.animationDelay = delay + 's';
+      el.style.opacity = opacity;
+      particles.appendChild(el);
+      setTimeout(()=> el.remove(), (dur + delay) * 1000 + 800);
+    }
+
+    function makeGlows(n=18){
+      for(let i=0;i<n;i++){
+        const g = document.createElement('div');
+        g.className = 'glow';
+        g.style.left = (Math.random()*100) + 'vw';
+        g.style.top = (Math.random()*100) + 'vh';
+        g.style.animationDelay = (Math.random()*3) + 's';
+        particles.appendChild(g);
+      }
+    }
+
+    function rainCrowns(){
+      // concentrado na região central (onde fica a foto)
+      const baseLeft = 37 + Math.random()*26;
+      const size = 18 + Math.random()*18;
+      const dur = 10 + Math.random()*8;
+      const delay = Math.random()*2;
+      spawnParticle('👑', size, baseLeft, dur, delay, 0.18 + Math.random()*0.18);
+    }
+
+    function rainFlowers(){
+      const chars = ['🌹','🌸','🌻'];
+      const c = chars[Math.floor(Math.random()*chars.length)];
+      const left = Math.random()*100;
+      const size = 18 + Math.random()*22;
+      const dur = 12 + Math.random()*10;
+      const delay = Math.random()*2;
+      spawnParticle(c, size, left, dur, delay, 0.10 + Math.random()*0.12);
+    }
+
+    function startParticles(){
+      particles.style.display = 'block';
+      if (!particles.querySelector('.glow')) makeGlows();
+      if (!crownsTimer) crownsTimer = setInterval(rainCrowns, 520);
+      if (!flowersTimer) flowersTimer = setInterval(rainFlowers, 900);
+    }
+
+    // ===== Intro -> Sanctuary =====
+    const intro = document.getElementById('intro');
+    const sanct = document.getElementById('sanctuary');
+    const startBtn = document.getElementById('startBtn');
+    const scene = document.getElementById('scene');
+
+    startBtn.addEventListener('click', () => {
+      scene.classList.add('play');
+
+      // tenta tocar música (se existir vienna.mp3)
+      if (bgMusic) {
+        bgMusic.volume = 0.35;
+        bgMusic.play().catch(()=>{});
+      }
+
+      // depois da animação, mostra santuário e liga partículas
+      setTimeout(() => {
+        intro.style.display = 'none';
+        sanct.style.display = 'block';
+        startParticles();
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }, 6900);
+    });
+
+    // ===== Carta (portal + segredo) =====
     const overlay = document.getElementById('overlay');
     const openLetter = document.getElementById('openLetter');
     const closeLetter = document.getElementById('closeLetter');
+    const letterBox = document.getElementById('letterBox');
+    const secretSpot = document.getElementById('secretSpot');
 
-    openLetter.addEventListener('click', () => {
+    function openOverlay(){
       overlay.style.display = 'flex';
-    });
+      letterBox.style.transition = 'none';
+      letterBox.style.transform = 'scale(.96)';
+      letterBox.style.opacity = '0';
+      setTimeout(()=>{
+        letterBox.style.transition = 'transform .22s ease, opacity .22s ease';
+        letterBox.style.transform = 'scale(1)';
+        letterBox.style.opacity = '1';
+      }, 10);
+    }
+    function closeOverlay(){ overlay.style.display = 'none'; }
 
-    closeLetter.addEventListener('click', () => {
-      overlay.style.display = 'none';
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) overlay.style.display = 'none';
-    });
+    openLetter.addEventListener('click', openOverlay);
+    secretSpot.addEventListener('click', openOverlay);
+    closeLetter.addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
   </script>
 </body>
 </html>

@@ -1,205 +1,387 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Rasgue o papel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Santuário para minha rainha</title>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Georgia', serif;
-}
+  <style>
+    :root{
+      --pink-bg: #ffd1e1;
+      --pink-bg2:#f7a8c5;
+      --card: rgba(255,255,255,.88);
+      --ink:#2a0b19;
+      --wine:#7a003d;
+      --hot:#ff5fa2;
+      --shadow: 0 20px 60px rgba(0,0,0,.22);
+      --shadow2: 0 10px 30px rgba(0,0,0,.18);
+      --radius: 22px;
+    }
 
-/* FUNDO */
-body {
-  background: radial-gradient(circle at top, #1b0010, #000);
-  min-height: 100vh;
-  color: #fff;
-  overflow-x: hidden;
-}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Georgia, serif;
+      color: var(--ink);
+      background: radial-gradient(1200px 800px at 50% 0%, var(--pink-bg), var(--pink-bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-/* ===== TELA 1 – ENVELOPE ===== */
-#inicio {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 34px 16px 70px;
+    }
 
-.envelop {
-  width: 320px;
-  height: 200px;
-  background: #c9a97f;
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 0 30px rgba(255,0,100,0.4);
-}
+    /* ===== TOPO (TRONO + FOTO) ===== */
+    .hero{
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 26px 18px 22px;
+      text-align:center;
+      border: 1px solid rgba(122,0,61,.12);
+    }
 
-.faixa {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  background: #fff;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
+    .hero h1{
+      margin: 0 0 14px;
+      color: var(--wine);
+      font-size: 40px;
+      letter-spacing: .4px;
+    }
 
-.tesoura {
-  font-size: 26px;
-}
+    .throneArea{
+      display:flex;
+      justify-content:center;
+      margin-top: 6px;
+    }
 
-.texto-inicio {
-  margin-top: 25px;
-  color: #ff4f9a;
-  font-size: 18px;
-  opacity: 0.9;
-}
+    .portrait{
+      width: min(320px, 90vw);
+      aspect-ratio: 3/4;
+      border-radius: 22px;
+      overflow:hidden;
+      position:relative;
+      background:#f6d1df;
+      box-shadow: 0 18px 55px rgba(122,0,61,.22);
+      border: 6px solid rgba(255,95,162,.55);
+    }
+    .portrait img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .aura{
+      position:absolute;
+      inset:-30%;
+      background: radial-gradient(circle at 50% 30%, rgba(255,95,162,.35), transparent 55%);
+      pointer-events:none;
+    }
 
-/* ===== TELA 2 – SANTUÁRIO ===== */
-#santuario {
-  display: none;
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #ffd6e8, #f4a7c1);
-  padding: 60px 20px;
-}
+    .subtitle{
+      margin: 14px 0 0;
+      opacity: .85;
+      color:#4a1630;
+    }
 
-/* flores */
-.flower {
-  position: fixed;
-  font-size: 38px;
-  opacity: 0.25;
-  animation: subir 18s linear infinite;
-}
+    /* ===== MEIO (LAYOUT IGUAL AO PAINT) ===== */
+    .stage{
+      margin-top: 22px;
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(122,0,61,.12);
+      padding: 22px;
+    }
 
-@keyframes subir {
-  from { transform: translateY(110vh); }
-  to { transform: translateY(-20vh); }
-}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 18px;
+      align-items: stretch;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: rgba(255,255,255,0.9);
-  padding: 40px;
-  border-radius: 30px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(0,0,0,0.25);
-}
+    /* coloca cada bloco onde você desenhou */
+    .pll{ grid-column:1; grid-row:1; }
+    .gg { grid-column:3; grid-row:1; }
+    .centerText{ grid-column:2; grid-row:1 / span 2; display:flex; align-items:center; justify-content:center; }
+    .friends{ grid-column:1; grid-row:2; }
+    .dr30{ grid-column:3; grid-row:2; }
 
-h1 {
-  color: #b0005a;
-  font-size: 42px;
-  margin-bottom: 25px;
-}
+    .card{
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(122,0,61,.12);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+      display:flex;
+      flex-direction:column;
+      min-height: 260px;
+    }
 
-.throne img {
-  width: 280px;
-  border-radius: 20px;
-  border: 6px solid #ff6fae;
-  box-shadow: 0 0 30px rgba(255,0,128,0.4);
-}
+    .card img{
+      width:100%;
+      height: 160px;
+      object-fit:cover;
+      display:block;
+    }
 
-.text {
-  margin-top: 25px;
-  color: #4a0030;
-  font-size: 18px;
-  line-height: 1.8;
-}
+    .card .text{
+      padding: 14px 16px 16px;
+      line-height: 1.55;
+      color:#2a0b19;
+      font-size: 15px;
+    }
 
-.refs {
-  margin-top: 25px;
-  font-style: italic;
-  opacity: 0.8;
-}
+    .card .text .sign{
+      opacity:.85;
+      font-weight:700;
+      color:#5a203b;
+    }
 
-/* botão secreto */
-.secret {
-  margin-top: 40px;
-  opacity: 0.05;
-  cursor: pointer;
-}
-</style>
+    .centerText .big{
+      text-align:center;
+      font-weight: 900;
+      letter-spacing:.4px;
+      color: #2a0b19;
+      font-size: 36px;
+      line-height: 1.15;
+      padding: 10px 6px;
+    }
+    .centerText .big span{
+      display:block;
+    }
+
+    /* ===== CHURROS + CARTINHA ===== */
+    .bottom{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .churros{
+      width: min(720px, 100%);
+      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(122,0,61,.12);
+      border-radius: 26px;
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .churros:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 45px rgba(0,0,0,.22);
+    }
+    .churros img{
+      width:100%;
+      height: 220px;
+      object-fit:cover;
+      display:block;
+    }
+    .churros .cap{
+      padding: 14px 16px;
+      text-align:center;
+      color:#3d0f25;
+      font-weight:700;
+    }
+    .churros .cap small{
+      display:block;
+      font-weight:600;
+      opacity:.8;
+      margin-top:6px;
+    }
+
+    /* ===== MODAL CARTA ===== */
+    #overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      z-index:9999;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .letter{
+      width: min(820px, 100%);
+      background: rgba(255,255,255,.94);
+      border-radius: 26px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.45);
+      padding: 26px 22px 22px;
+      position:relative;
+      animation: fadeUp .25s ease;
+      color: #2a0b19;
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform:none; }
+    }
+    .letter h2{
+      margin: 0 0 10px;
+      color: var(--wine);
+      font-size: 22px;
+    }
+    .letter p{
+      margin: 0;
+      line-height: 1.85;
+      font-size: 16px;
+      color:#2a0b19;
+    }
+    .closeBtn{
+      position:absolute;
+      right: 14px;
+      top: 14px;
+      border:none;
+      background: rgba(255,95,162,.18);
+      color: var(--wine);
+      font-weight: 900;
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor:pointer;
+    }
+
+    /* ===== RESPONSIVO ===== */
+    @media (max-width: 900px){
+      .grid{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .pll,.gg,.friends,.dr30,.centerText{
+        grid-column:auto; grid-row:auto;
+      }
+      .centerText .big{ font-size: 32px; }
+      .card{ min-height: unset; }
+      .card img{ height: 190px; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <!-- TOPO -->
+    <section class="hero">
+      <h1>Santuário para minha rainha</h1>
+      <div class="throneArea">
+        <div class="portrait">
+          <img src="giovana.jpg" alt="Giovana">
+          <div class="aura"></div>
+        </div>
+      </div>
+      <p class="subtitle">Aqui é o seu trono. Aqui é o seu lugar.</p>
+    </section>
 
-<!-- MÚSICA -->
-<audio id="musica" loop>
-  <source src="vienna.mp3" type="audio/mpeg">
-</audio>
+    <!-- MEIO (IGUAL AO PAINT) -->
+    <section class="stage">
+      <div class="grid">
 
-<!-- ===== INÍCIO ===== -->
-<div id="inicio">
-  <div class="envelop" id="abrir">
-    <div class="faixa">
-      ❤️ ❤️ ❤️ ❤️ ❤️
-      <span class="tesoura">✂️</span>
-      ❤️ ❤️ ❤️ ❤️ ❤️
+        <!-- PLL (ESQUERDA) -->
+        <div class="card pll">
+          <img src="pll.jpg" alt="Pretty Little Liars">
+          <div class="text">
+            <em>Alguns segredos são perigosos.<br>Outros… só querem te amar.</em><br><br>
+            Parece que você tem um admirador secreto.<br>
+            <span class="sign">— C</span>
+          </div>
+        </div>
+
+        <!-- CENTRO -->
+        <div class="centerText">
+          <div class="big">
+            <span>seu</span>
+            <span>mundo</span>
+            <span>para</span>
+            <span>provar</span>
+            <span>que te</span>
+            <span>amo</span>
+          </div>
+        </div>
+
+        <!-- GOSSIP GIRL (DIREITA) -->
+        <div class="card gg">
+          <img src="gossipgirl.jpg" alt="Gossip Girl">
+          <div class="text">
+            <em>Eu vi o seu brilho de longe.<br>E decidi que ele seria meu lugar.</em><br><br>
+            You know you love me…<br>
+            <span class="sign">xoxo, Caio</span>
+          </div>
+        </div>
+
+        <!-- FRIENDS (BAIXO-ESQ) -->
+        <div class="card friends">
+          <img src="friends.jpg" alt="Friends">
+          <div class="text">
+            <em>No meu mundo tem barulho.<br>Mas quando você chega… vira casa.</em><br><br>
+            Eu fico. Eu cuido. Eu escolho você.<br>
+            <span class="sign">— Caio</span>
+          </div>
+        </div>
+
+        <!-- DE REPENTE 30 (BAIXO-DIR) -->
+        <div class="card dr30">
+          <img src="dr30.jpg" alt="De Repente 30">
+          <div class="text">
+            <em>Se eu pudesse pular no tempo,<br>eu ainda escolheria você em todas as idades.</em><br><br>
+            Porque meu “felizes pra sempre” tem seu nome.<br>
+            <span class="sign">— C</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CHURROS (ABAIXO, CLICA E ABRE CARTA) -->
+      <div class="bottom">
+        <div class="churros" id="openLetter" title="Clique…">
+          <img src="churros.jpg" alt="Churros de frango">
+          <div class="cap">
+            foto churros de frango
+            <small>clica e abre uma cartinha</small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL CARTA -->
+  <div id="overlay">
+    <div class="letter">
+      <button class="closeBtn" id="closeLetter">✕</button>
+      <h2>Giovana,</h2>
+      <p>
+        Eu fiz esse lugar pra você.<br>
+        Um santuário mesmo — porque tem coisas em você que eu não consigo tratar como “normal”.<br><br>
+
+        Tem o seu jeito, o seu brilho, as suas fases, suas referências, seus detalhes… até o que você ama comer.
+        Eu guardo tudo como quem guarda o que é precioso, porque você é.<br><br>
+
+        Se existir um “admirador secreto”, sou eu todos os dias — te admirando em silêncio,
+        te escolhendo alto, e amando você do jeito que não passa.<br><br>
+
+        <strong>Eu te amo.</strong><br>
+        — Caio
+      </p>
     </div>
   </div>
 
-  <div class="texto-inicio">
-    Rasgue o papel, caso me ame.
-  </div>
-</div>
+  <script>
+    const overlay = document.getElementById('overlay');
+    const openLetter = document.getElementById('openLetter');
+    const closeLetter = document.getElementById('closeLetter');
 
-<!-- ===== SANTUÁRIO ===== -->
-<div id="santuario">
+    openLetter.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+    });
 
-  <!-- flores -->
-  <div class="flower" style="left:10%; animation-delay:0s;">🌹</div>
-  <div class="flower" style="left:30%; animation-delay:5s;">🌸</div>
-  <div class="flower" style="left:50%; animation-delay:10s;">🌻</div>
-  <div class="flower" style="left:70%; animation-delay:3s;">🌹</div>
-  <div class="flower" style="left:90%; animation-delay:8s;">🌸</div>
+    closeLetter.addEventListener('click', () => {
+      overlay.style.display = 'none';
+    });
 
-  <div class="container">
-    <h1>Santuário para minha rainha</h1>
-
-    <div class="throne">
-      <img src="foto-giovana.jpg" alt="Minha Rainha">
-    </div>
-
-    <div class="text">
-      Aqui não existe pressa.<br>
-      Não existe barulho.<br>
-      Só o mundo onde você é a personagem principal.
-      <br><br>
-      Alguns chamariam de segredo,<br>
-      outros de fofoca,<br>
-      outros de trinta anos em um instante,<br>
-      outros de um sofá confortável onde tudo faz sentido.
-      <br><br>
-      Eu chamo de você.
-    </div>
-
-    <div class="refs">
-      “You know you love her.”<br>
-      Algumas histórias são feitas para serem vividas em silêncio.
-    </div>
-
-    <div class="secret">
-      algo ainda dorme aqui
-    </div>
-  </div>
-</div>
-
-<script>
-document.getElementById('abrir').addEventListener('click', () => {
-  document.getElementById('inicio').style.display = 'none';
-  document.getElementById('santuario').style.display = 'block';
-  document.getElementById('musica').play();
-});
-</script>
-
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.style.display = 'none';
+    });
+  </script>
 </body>
 </html>

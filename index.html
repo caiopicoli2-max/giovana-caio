@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Rasgue o papel</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Georgia', serif;
+}
+
+/* FUNDO */
+body {
+  background: radial-gradient(circle at top, #1b0010, #000);
+  min-height: 100vh;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ===== TELA 1 – ENVELOPE ===== */
+#inicio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.envelop {
+  width: 320px;
+  height: 200px;
+  background: #c9a97f;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(255,0,100,0.4);
+}
+
+.faixa {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #fff;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.tesoura {
+  font-size: 26px;
+}
+
+.texto-inicio {
+  margin-top: 25px;
+  color: #ff4f9a;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* ===== TELA 2 – SANTUÁRIO ===== */
+#santuario {
+  display: none;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #ffd6e8, #f4a7c1);
+  padding: 60px 20px;
+}
+
+/* flores */
+.flower {
+  position: fixed;
+  font-size: 38px;
+  opacity: 0.25;
+  animation: subir 18s linear infinite;
+}
+
+@keyframes subir {
+  from { transform: translateY(110vh); }
+  to { transform: translateY(-20vh); }
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: rgba(255,255,255,0.9);
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,0,0,0.25);
+}
+
+h1 {
+  color: #b0005a;
+  font-size: 42px;
+  margin-bottom: 25px;
+}
+
+.throne img {
+  width: 280px;
+  border-radius: 20px;
+  border: 6px solid #ff6fae;
+  box-shadow: 0 0 30px rgba(255,0,128,0.4);
+}
+
+.text {
+  margin-top: 25px;
+  color: #4a0030;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.refs {
+  margin-top: 25px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* botão secreto */
+.secret {
+  margin-top: 40px;
+  opacity: 0.05;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MÚSICA -->
+<audio id="musica" loop>
+  <source src="vienna.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ===== INÍCIO ===== -->
+<div id="inicio">
+  <div class="envelop" id="abrir">
+    <div class="faixa">
+      ❤️ ❤️ ❤️ ❤️ ❤️
+      <span class="tesoura">✂️</span>
+      ❤️ ❤️ ❤️ ❤️ ❤️
+    </div>
+  </div>
+
+  <div class="texto-inicio">
+    Rasgue o papel, caso me ame.
+  </div>
+</div>
+
+<!-- ===== SANTUÁRIO ===== -->
+<div id="santuario">
+
+  <!-- flores -->
+  <div class="flower" style="left:10%; animation-delay:0s;">🌹</div>
+  <div class="flower" style="left:30%; animation-delay:5s;">🌸</div>
+  <div class="flower" style="left:50%; animation-delay:10s;">🌻</div>
+  <div class="flower" style="left:70%; animation-delay:3s;">🌹</div>
+  <div class="flower" style="left:90%; animation-delay:8s;">🌸</div>
+
+  <div class="container">
+    <h1>Santuário para minha rainha</h1>
+
+    <div class="throne">
+      <img src="foto-giovana.jpg" alt="Minha Rainha">
+    </div>
+
+    <div class="text">
+      Aqui não existe pressa.<br>
+      Não existe barulho.<br>
+      Só o mundo onde você é a personagem principal.
+      <br><br>
+      Alguns chamariam de segredo,<br>
+      outros de fofoca,<br>
+      outros de trinta anos em um instante,<br>
+      outros de um sofá confortável onde tudo faz sentido.
+      <br><br>
+      Eu chamo de você.
+    </div>
+
+    <div class="refs">
+      “You know you love her.”<br>
+      Algumas histórias são feitas para serem vividas em silêncio.
+    </div>
+
+    <div class="secret">
+      algo ainda dorme aqui
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('abrir').addEventListener('click', () => {
+  document.getElementById('inicio').style.display = 'none';
+  document.getElementById('santuario').style.display = 'block';
+  document.getElementById('musica').play();
+});
+</script>
+
+</body>
+</html>
